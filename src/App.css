@@ -78,6 +78,7 @@
 .chat-input-textarea {
   width: 90%;
   padding: 12px;
+  margin-right: 12px;
   border-radius: 5px;
   border: none;
   background-color: #40414f;
