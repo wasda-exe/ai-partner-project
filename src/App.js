@@ -10,11 +10,16 @@ function App() {
   // this was absolutely fun stuff for testing that both assistant and user get rendered correctly
   // the array inside react now works fine
   // now you just populate this array with the api :)
-  const [chatMessages, setChatMessages] = useState([{
-    role: "user", "content": "Who won the world series in 2020?"
-  }, {
-    role: "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."
-  }]);
+  const [chatMessages, setChatMessages] = useState([]);
+  // const [chatMessages, setChatMessages] = useState([{
+  //   role: "user", "content": "Who won the world series in 2020?"
+  // }, {
+  //   role: "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."
+  // }]);
+
+  function clearChat() {
+    setChatMessages([])
+  }
 
   const handleSubmit = async (event) => {
     // Prevent page reload
@@ -22,14 +27,17 @@ function App() {
 
     // Get the current value of the input field
     const newMessage = messageInput.trim();
+    console.log(messageInput)
+    console.log(newMessage)
 
     // Add newMessage if only messageInput is not empty string
     if (newMessage) {
       // Create a new message object and append it to the chatMessages array
-      setChatMessages(prevMessages => [
+      await setChatMessages(prevMessages => [
         ...prevMessages,
         { role: 'user', content: newMessage }
-      ]);
+      ])
+      console.log(chatMessages)
 
       // Test
       // console.log('Message submitted:', messageInput);
@@ -37,7 +45,7 @@ function App() {
 
       // Sending chat log to the server
       try {
-        const response = await fetch('/api/chat', {
+        const response = await fetch('http://localhost:3080/api/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -47,7 +55,8 @@ function App() {
 
         if (response.ok) {
           const data = await response.json();
-          setChatMessages(prevMessages => [...prevMessages, { role: 'assistant', content: data.response }]);
+          await setChatMessages(data.chatLog);
+          // setChatMessages(prevMessages => [...prevMessages, { role: 'assistant', content: data.response }]);
         } else {
           console.error('Failed to fetch response from server');
         }
@@ -57,15 +66,19 @@ function App() {
 
 
       // Clear the input field after submission
-      setMessageInput('');
+      await setMessageInput('');
 
     };
   }
 
+  useEffect(() => {
+    console.log(chatMessages);
+  }, [chatMessages]);
+
   return (
     <div className="App">
       <aside className="sidemenu">
-        <div className="side-menu-button">
+        <div className="side-menu-button" onClick={clearChat}>
           <span>+</span>
           New Chat
         </div>
@@ -73,7 +86,7 @@ function App() {
       <section className="chatbox">
         <div className="chat-log">
           {/* Loop through chatMessages and render a ChatMessage component for each message */}
-          {chatMessages.map((message, index) => (
+          {chatMessages.slice(1).map((message, index) => (
             <ChatMessage key={index} message={message} />
           ))}
         </div>
