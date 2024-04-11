@@ -6,6 +6,10 @@ import './App.css';
 function App() {
   const [messageInput, setMessageInput] = useState('');
   // const [chatMessages, setChatMessages] = useState([]);
+
+  // this was absolutely fun stuff for testing that both assistant and user get rendered correctly
+  // the array inside react now works fine
+  // now you just populate this array with the api :)
   const [chatMessages, setChatMessages] = useState([{
     role: "user", "content": "Who won the world series in 2020?"
   }, {
@@ -27,11 +31,34 @@ function App() {
         { role: 'user', content: newMessage }
       ]);
 
+      // Test
+      // console.log('Message submitted:', messageInput);
+
+
+      // Sending chat log to the server
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ chatLog: chatMessages })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setChatMessages(prevMessages => [...prevMessages, { role: 'assistant', content: data.response }]);
+        } else {
+          console.error('Failed to fetch response from server');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+
+
       // Clear the input field after submission
       setMessageInput('');
 
-      // test
-      // console.log('Message submitted:', messageInput);
     };
   }
 
