@@ -1,4 +1,5 @@
 import logo from './images/ai-girl-logo-square.png';
+import mainLogo from './images/someone-who-cares.png';
 import neutralAI from "./images/neutral.png"
 import happyAI from "./images/happy.png"
 import sadAI from "./images/sad.png"
@@ -36,8 +37,8 @@ const imageLogos = {
 function App() {
   const [gender, setGender] = useState("Female");
   const [mood, setMood] = useState("the same as usual");
-  const [userName, setUserName] = useState("");
-  const [aiName, setAIName] = useState("");
+  const [userName, setUserName] = useState("Sweetie");
+  const [aiName, setAIName] = useState("Emi");
   const [place, setPlace] = useState("home");
 
   const [aiEmotionalState, setAiEmotionalState] = useState("NEUTRAL"); // Default to Neutral
@@ -168,6 +169,7 @@ function App() {
   return (
     <div className="App">
       <aside className="sidemenu">
+        <img className='mainLogo' src={mainLogo}></img>
         <div className="side-menu-button" onClick={clearChat}>
           <span>+</span>
           New Chat
@@ -223,9 +225,9 @@ function App() {
             <ChatMessage key={index} message={message} />
           ))}
         </div>
-        <div >
+        <div className='imageLogoHolder'>
           <img className='imageLogo' src={imageLogo} alt="Avatar" />
-          <p>{aiName}</p> {/* Display the AI name */}
+          <p className='imageLogoSubtitle'>{aiName}</p> {/* Display the AI name */}
         </div>
         <div className="chat-input-holder">
           <form onSubmit={handleSubmit}>
@@ -234,7 +236,7 @@ function App() {
               onChange={(e) => setMessageInput(e.target.value)}
               rows="1" className="chat-input-textarea" placeholder="Type your message here">
             </input>
-            <button type="submit">Send</button>
+            <button className='chat-input-submit' type="submit">Send</button>
           </form>
         </div>
       </section>

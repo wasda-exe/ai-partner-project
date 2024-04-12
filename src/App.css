@@ -13,29 +13,40 @@
   width: 260px;
   padding: 10px;
   /* background-color: #171717; */
-  background-color: #bed1c5;
+  /* background-color: #bed1c5; */
+  background-color: #292828;
 }
 .sidemenu > div {
-  margin-bottom: 30px; /* Adjust this value as needed */
+  margin-bottom: 26px; /* Adjust this value as needed */
 }
 .sidemenu > div > p {
-  margin-bottom: 8px; /* Adjust this value as needed */
+  color: rgb(255, 151, 243);
+  margin-bottom: 6px; /* Adjust this value as needed */
 }
 .sidemenu > div > select {
   width: 80%;
   border-radius: 5px;
+  /* background-color: #f89791; */
 }
 .sidemenu > div > input {
   width: 65%;
   border-radius: 5px;
+  /* background-color: #f89791; */
 }
 
+.mainLogo{
+  height: 70px;
+  margin-top: 2px;
+  margin-bottom: 12px;
+}
 .side-menu-button {
   padding: 12px;
-  border: 1px solid #8a5251;
+  /* border: 1px solid #8a5251; */
+  border: 1px solid rgb(255, 151, 243);;
   border-radius: 5px;
   text-align: left;
   transition: ease 0.25s all;
+  color: white;
 }
 .side-menu-button:hover {
   background-color: rgba(255,255,255,0.5);
@@ -51,6 +62,7 @@
   /* background-color: #212121; */
   background-color: #fefee6;
   color: black;
+
 
 }
 
@@ -92,10 +104,20 @@
   padding-right: 40px;
 }
 
-.imageLogo{
-  height: 200px;
-  /* position: absolute;
-  margin-right: 2000px; */
+.imageLogoHolder {
+  /* text-align: right; */
+  position: fixed; /* Set position to fixed */
+  top: 10%; /* Place it in the vertical center */
+  right: 15px; /* Align it to the right */
+}
+.imageLogo {
+  height: 300px;
+  /* transform: translateY(-50%); */
+}
+.imageLogoSubtitle {
+  margin-top: 6px;
+  font-size: 1.5em;
+  transform: translateX(-5%);
 }
 
 .chat-input-holder {
@@ -111,11 +133,27 @@
   margin-right: 12px;
   border-radius: 5px;
   border: none;
-  background-color: #40414f;
+  /* background-color: #40414f; */
+  background-color: #292828;
   color: white;
   font-size: 1.25em;
   outline: none;
   box-shadow: 0 0 8px 0 rgba(0,0,0,0.25);
+}
+
+.chat-input-submit {
+  padding: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-left: 6px;
+  /* border: 1px solid #8a5251; */
+  color: rgb(255, 151, 243);
+  border: 1px solid rgb(255, 151, 243);
+  background-color: #292828;
+  border-radius: 5px;
+  text-align: left;
+  transition: ease 0.25s all;
+  /* color: white; */
 }
 
 .App-logo {
