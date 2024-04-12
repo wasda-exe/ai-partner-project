@@ -77,8 +77,15 @@ function App() {
     console.log(emotionalState)
     // const path = imageLogos[emotionalState];
     console.log("asifjas")
-    console.log(imageLogos[emotionalState])
-    setImageLogo(imageLogos[emotionalState]);
+    // console.log(imageLogos[emotionalState])
+    // setImageLogo(imageLogos[emotionalState]);
+
+    // Check if emotionalState exists in imageLogos
+    if (emotionalState in imageLogos) {
+      setImageLogo(imageLogos[emotionalState]);
+    } else {
+      setImageLogo(imageLogos["NEUTRAL"]);
+    }
   }, [aiEmotionalState]); // Update the image path whenever aiEmotionalState changes
 
 
