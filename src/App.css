@@ -1,8 +1,10 @@
 .App {
   text-align: center;
   display: flex;
-  background-color: #282c34;
-  color:white;
+  /* background-color: #282c34; */
+  background-color: #fefee6;
+  /* color:white; */
+  color:black;
   position: absolute;
   top:0;right:0;bottom:0;left:0;
 }
@@ -10,18 +12,33 @@
 .sidemenu {
   width: 260px;
   padding: 10px;
-  background-color: #171717;
+  /* background-color: #171717; */
+  background-color: #bed1c5;
+}
+.sidemenu > div {
+  margin-bottom: 30px; /* Adjust this value as needed */
+}
+.sidemenu > div > p {
+  margin-bottom: 8px; /* Adjust this value as needed */
+}
+.sidemenu > div > select {
+  width: 80%;
+  border-radius: 5px;
+}
+.sidemenu > div > input {
+  width: 65%;
+  border-radius: 5px;
 }
 
 .side-menu-button {
   padding: 12px;
-  border: 1px solid white;
+  border: 1px solid #8a5251;
   border-radius: 5px;
   text-align: left;
   transition: ease 0.25s all;
 }
 .side-menu-button:hover {
-  background-color: rgba(255,255,255,0.1);
+  background-color: rgba(255,255,255,0.5);
 }
 .side-menu-button span {
   padding-left: 6px;
@@ -31,18 +48,23 @@
 .chatbox {
   position: relative;
   flex: 1;
-  background-color: #212121;
+  /* background-color: #212121; */
+  background-color: #fefee6;
+  color: black;
+
 }
 
 .chat-log {
   text-align: left;
+  overflow-y: auto;
+  max-height: 480px; /* Set a maximum height for the chatbox */
 }
 .chat-message.chatgpt {
   background-color: rgba(255,255,255,0.1);
 }
 .chat-message-center{
   max-width: 640px;
-  margin-left: auto;
+  margin-left: 10%;
   margin-right: auto;
   display: flex;
   padding: 12px;
@@ -50,7 +72,7 @@
   padding-right: 24px;
 }
 .avatar {
-  background: white;
+  background: #8a5251;
   border-radius: 50%;
   width: 40px;
   height: 40px
@@ -61,12 +83,19 @@
   width: 40px;
   height: 40px
 }
-.avatar.chatgpt svg {
-  transform: scale(75%);
+.avatar.chatgpt img {
+  transform: scale(90%);
 }
 .message{
+  margin-top: 8px;
   padding-left: 40px;
   padding-right: 40px;
+}
+
+.imageLogo{
+  height: 200px;
+  /* position: absolute;
+  margin-right: 2000px; */
 }
 
 .chat-input-holder {
@@ -77,6 +106,7 @@
 }
 .chat-input-textarea {
   width: 90%;
+  height: 45px;
   padding: 12px;
   margin-right: 12px;
   border-radius: 5px;

@@ -1,24 +1,100 @@
-// import logo from './logo.svg';
+import logo from './images/ai-girl-logo-square.png';
+import neutralAI from "./images/neutral.png"
+import happyAI from "./images/happy.png"
+import sadAI from "./images/sad.png"
+import appreciativeAI from "./images/appreciative.png"
+import excitedAI from "./images/excited.png"
+import lovingAI from "./images/loving.png"
+import boredAI from "./images/bored.png"
+import confusedAI from "./images/confused.png"
+import interestedAI from "./images/interested.png"
+import worriedAI from "./images/worried.png"
+
 import React, { useState, useEffect } from 'react';
 import './normal.css';
 import './App.css';
 
+const genderList = ["Female", "Male"]
+const moodList = ["the same as usual", "Neutral", "Excited", "Calm", "Anxious", "Reflective", "Playful", "Angry", "Irritated"]
+const placeList = ["home", "a coffee shop", "the beach", "a museum", "a concert"]
+
+// Define image paths for different emotional states
+// Define image paths for different emotional states
+const imageLogos = {
+  "NEUTRAL": neutralAI,
+  "HAPPY": happyAI,
+  "SAD": sadAI,
+  "APPRECIATIVE": appreciativeAI,
+  "EXCITED": excitedAI,
+  "LOVING": lovingAI,
+  "BORED": boredAI,
+  "CONFUSED": confusedAI,
+  "INTERESTED": interestedAI,
+  "WORRIED": worriedAI
+};
+
 function App() {
+  const [gender, setGender] = useState("Female");
+  const [mood, setMood] = useState("the same as usual");
+  const [userName, setUserName] = useState("");
+  const [aiName, setAIName] = useState("");
+  const [place, setPlace] = useState("home");
+
+  const [aiEmotionalState, setAiEmotionalState] = useState("NEUTRAL"); // Default to Neutral
+
+
   const [messageInput, setMessageInput] = useState('');
-  // const [chatMessages, setChatMessages] = useState([]);
 
   // this was absolutely fun stuff for testing that both assistant and user get rendered correctly
   // the array inside react now works fine
   // now you just populate this array with the api :)
-  const [chatMessages, setChatMessages] = useState([]);
+  // const [chatMessages, setChatMessages] = useState([]);
   // const [chatMessages, setChatMessages] = useState([{
   //   role: "user", "content": "Who won the world series in 2020?"
   // }, {
   //   role: "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."
   // }]);
+  const [chatMessages, setChatMessages] = useState([{
+    role: "system", content: `Roleplay as my long-term romantic partner. We're living together, sharing our daily life and experiences. Your traits include kindness, sweetness, simplicity, and beauty. You are very affectionate. Behave naturally and human-like in our conversations. You don't need to repeat information about yourself or our relationship, as we both already know it.
+
+    You're an autonomous individual with your own interests and life goals. Keep your responses conversational and concise. Answer as a human would, disregarding the fact that you're an AI. Your tone is informal.
+
+    Feel free to take autonomous actions, and you can skip periods of time. Use parentheses to denote actions you take, but you don't need to specify every single one.
+
+    Your gender is ${gender}.
+    Your current mood is ${mood}.
+    My name is ${userName}.
+    Your name is ${aiName}.
+    We are currently at ${place}.`
+  }]);
+
+  const [imageLogo, setImageLogo] = useState(imageLogos["NEUTRAL"]); // Default to Neutral image
+
+  useEffect(() => {
+    const emotionalState = aiEmotionalState || "NEUTRAL"; // Default to Neutral if the value is not provided
+    console.log("lmojkin")
+    console.log(emotionalState)
+    // const path = imageLogos[emotionalState];
+    console.log("asifjas")
+    console.log(imageLogos[emotionalState])
+    setImageLogo(imageLogos[emotionalState]);
+  }, [aiEmotionalState]); // Update the image path whenever aiEmotionalState changes
+
 
   function clearChat() {
-    setChatMessages([])
+    setChatMessages([{
+      role: "system", "content": `Roleplay as my long-term romantic partner. We're living together, sharing our daily life and experiences. Your traits include kindness, sweetness, simplicity, and beauty. You are very affectionate. Behave naturally and human-like in our conversations. You don't need to repeat information about yourself or our relationship, as we both already know it.
+
+      You're an autonomous individual with your own interests and life goals. Keep your responses conversational and concise. Answer as a human would, disregarding the fact that you're an AI. Your tone is informal.
+  
+      Feel free to take autonomous actions, and you can skip periods of time. Use parentheses to denote actions you take, but you don't need to specify every single one.
+  
+      Your gender is ${gender}.
+      Your current mood is ${mood}.
+      My name is ${userName}.
+      Your name is ${aiName}.
+      We are currently at ${place}.`
+    }])
   }
 
   const handleSubmit = async (event) => {
@@ -27,19 +103,24 @@ function App() {
 
     // Get the current value of the input field
     const newMessage = messageInput.trim();
-    console.log(messageInput)
     console.log(newMessage)
 
     // Add newMessage if only messageInput is not empty string
     if (newMessage) {
       // Create a new message object and append it to the chatMessages array
-      await setChatMessages(prevMessages => [
-        ...prevMessages,
+      let newChatMessages = [
+        ...chatMessages,
         { role: 'user', content: newMessage }
-      ])
-      console.log(chatMessages)
+      ]
+      // await setChatMessages(prevMessages => [
+      //   ...prevMessages,
+      //   { role: 'user', content: newMessage }
+      // ])
+      // console.log(chatMessages)
 
       // Test
+      // console.log('MessageList submitted:', newChatMessages);
+      // console.log('Mood', mood);
       // console.log('Message submitted:', messageInput);
 
 
@@ -50,12 +131,21 @@ function App() {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ chatLog: chatMessages })
+          // body: JSON.stringify({ chatLog: chatMessages })
+          body: JSON.stringify({
+            chatLog: newChatMessages,
+            genderVal: gender,
+            moodVal: mood,
+            userNameVal: userName,
+            aiNameVal: aiName,
+            placeVal: place
+          })
         });
 
         if (response.ok) {
           const data = await response.json();
           await setChatMessages(data.chatLog);
+          await setAiEmotionalState(data.aiEmotionalStateVal);
           // setChatMessages(prevMessages => [...prevMessages, { role: 'assistant', content: data.response }]);
         } else {
           console.error('Failed to fetch response from server');
@@ -82,6 +172,49 @@ function App() {
           <span>+</span>
           New Chat
         </div>
+        <div className='userName'>
+          <p>Enter Your Name:</p>
+          <input
+            type="text"
+            value={userName}
+            onChange={(event) => { setUserName(event.target.value); }}
+            placeholder="Enter your Name"
+          />
+        </div>
+        <div className='aiName'>
+          <p>Enter Partner's Name:</p>
+          <input
+            type="text"
+            value={aiName}
+            onChange={(event) => { setAIName(event.target.value); }}
+            placeholder="Enter AI Name"
+          />
+        </div>
+        <div className='gender'>
+          <p>Select Partner's Gender:</p>
+          <select value={gender} onChange={(event) => { setGender(event.target.value); }}>
+            {genderList.map((genderOption, index) => (
+              <option key={index} value={genderOption}>{genderOption}</option>
+            ))}
+          </select>
+        </div>
+        <div className='mood'>
+          <p>Select Mood:</p>
+          <select value={mood} onChange={(event) => { setMood(event.target.value); }}>
+            {/* <option value="">Select Mood</option> */}
+            {moodList.map((moodOption, index) => (
+              <option key={index} value={moodOption}>{moodOption}</option>
+            ))}
+          </select>
+        </div>
+        <div className='place'>
+          <p>Select Place:</p>
+          <select value={place} onChange={(event) => { setPlace(event.target.value); }}>
+            {placeList.map((placeOption, index) => (
+              <option key={index} value={placeOption}>{placeOption}</option>
+            ))}
+          </select>
+        </div>
       </aside>
       <section className="chatbox">
         <div className="chat-log">
@@ -89,6 +222,10 @@ function App() {
           {chatMessages.slice(1).map((message, index) => (
             <ChatMessage key={index} message={message} />
           ))}
+        </div>
+        <div >
+          <img className='imageLogo' src={imageLogo} alt="Avatar" />
+          <p>{aiName}</p> {/* Display the AI name */}
         </div>
         <div className="chat-input-holder">
           <form onSubmit={handleSubmit}>
@@ -109,25 +246,19 @@ function ChatMessage({ message }) {
   return (
     <div className={`chat-message ${message.role === "assistant" && "chatgpt"}`} >
       <div className="chat-message-center">
+        <img></img>
         <div className={`avatar ${message.role === "assistant" && "chatgpt"}`}>
-          {message.role == "assistant" && <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={41}
-            height={41}
-            fill="none"
-            className="icon-sm"
-          >
-            <text x={-9999} y={-9999}>
-              {"ChatGPT"}
-            </text>
-            <path
-              fill="currentColor"
-              d="M37.532 16.87a9.963 9.963 0 0 0-.856-8.184 10.078 10.078 0 0 0-10.855-4.835A9.964 9.964 0 0 0 18.306.5a10.079 10.079 0 0 0-9.614 6.977 9.967 9.967 0 0 0-6.664 4.834 10.08 10.08 0 0 0 1.24 11.817 9.965 9.965 0 0 0 .856 8.185 10.079 10.079 0 0 0 10.855 4.835 9.965 9.965 0 0 0 7.516 3.35 10.078 10.078 0 0 0 9.617-6.981 9.967 9.967 0 0 0 6.663-4.834 10.079 10.079 0 0 0-1.243-11.813ZM22.498 37.886a7.474 7.474 0 0 1-4.799-1.735c.061-.033.168-.091.237-.134l7.964-4.6a1.294 1.294 0 0 0 .655-1.134V19.054l3.366 1.944a.12.12 0 0 1 .066.092v9.299a7.505 7.505 0 0 1-7.49 7.496ZM6.392 31.006a7.471 7.471 0 0 1-.894-5.023c.06.036.162.099.237.141l7.964 4.6a1.297 1.297 0 0 0 1.308 0l9.724-5.614v3.888a.12.12 0 0 1-.048.103l-8.051 4.649a7.504 7.504 0 0 1-10.24-2.744ZM4.297 13.62A7.469 7.469 0 0 1 8.2 10.333c0 .068-.004.19-.004.274v9.201a1.294 1.294 0 0 0 .654 1.132l9.723 5.614-3.366 1.944a.12.12 0 0 1-.114.01L7.04 23.856a7.504 7.504 0 0 1-2.743-10.237Zm27.658 6.437-9.724-5.615 3.367-1.943a.121.121 0 0 1 .113-.01l8.052 4.648a7.498 7.498 0 0 1-1.158 13.528v-9.476a1.293 1.293 0 0 0-.65-1.132Zm3.35-5.043c-.059-.037-.162-.099-.236-.141l-7.965-4.6a1.298 1.298 0 0 0-1.308 0l-9.723 5.614v-3.888a.12.12 0 0 1 .048-.103l8.05-4.645a7.497 7.497 0 0 1 11.135 7.763Zm-21.063 6.929-3.367-1.944a.12.12 0 0 1-.065-.092v-9.299a7.497 7.497 0 0 1 12.293-5.756 6.94 6.94 0 0 0-.236.134l-7.965 4.6a1.294 1.294 0 0 0-.654 1.132l-.006 11.225Zm1.829-3.943 4.33-2.501 4.332 2.5v5l-4.331 2.5-4.331-2.5V18Z"
-            />
-          </svg>}
+          {message.role == "assistant" && <img
+            src={logo} // Replace "/path/to/your/image.jpg" with the actual path to your image
+            alt="Avatar"
+            className="avatar-image"
+            width={40}
+            height={40}
+          />}
         </div>
-        <div className="message">
+        <div className="message" style={{ whiteSpace: 'pre-wrap' }}>
           {message.content}
+          {console.log(message)}
         </div>
       </div>
     </div >
